@@ -137,8 +137,14 @@ function renderContact(id) {
          console.log(result);
     }});
 }
+function renderAddContact() {
+
+    loadContent("addContact.html");
+}
 
 function renderContacts() {
+
+    var contactResponse = "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderAddContact()'><b>Add</b></a>";
 
     $.ajax({
 		url: "http://35.227.78.91/user/contacts",
@@ -147,7 +153,7 @@ function renderContacts() {
 			api_key: api_key_G
 		},
 		success: function(result){
-         var contactResponse = "";
+         
          $.each(result, function(index){
             contactResponse += "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderContact(result[index].ContactID)'>" + result[index].contact_name + "</a>";
          });
