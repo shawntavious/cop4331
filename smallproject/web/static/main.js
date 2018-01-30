@@ -1,5 +1,6 @@
 
 var enabled = 0;
+var api_key_G = ""
 
 function navflip() {
     if(enabled == 0 ){
@@ -18,6 +19,7 @@ function w3_open() {
     document.getElementById("nav-sidebar").style.width = "15%";
     document.getElementById("nav-sidebar").style.display = "block";
 }
+
 function w3_close() {
     enabled = 0;
     document.getElementById("body").classList.remove('w3-animate-left');
@@ -37,8 +39,6 @@ function loadContent(pagename) {
    xhttp.open("GET", pagename, true);
    xhttp.send();
 }
-
-var api_key_G = ""
 
 function register() {
     var g_email = $("input[name='email']").val();
@@ -68,8 +68,6 @@ function logout() {
     loadContent("login.html");
 }
 
-var api_key_G = ""
-
 function login() {
 
     var g_email = $("input[name='email']").val();
@@ -94,7 +92,7 @@ function login() {
             loadContent("failLogin.html");
         }
 
-});
+    });
 }
 
 function renderContact(id) {
@@ -137,6 +135,48 @@ function renderContact(id) {
          console.log(result);
     }});
 }
+
+function addContact() {
+
+    var name = $("input[name='name']").val();
+    var address = $("input[name='address']").val();
+    var city = $("input[name='city']").val();
+    var state = $("input[name='state']").val();
+    var zip = $("input[name='zip']").val();
+    var home = $("input[name='home']").val();
+    var cell = $("input[name='cell']").val();
+    var work = $("input[name='work']").val();
+    var email = $("input[name='email']").val();
+    var email2 = $("input[name='email2']").val();
+
+    $.ajax({
+        url: "http://35.227.78.91/contact/add",
+        type: 'post',
+        data: {
+            api_key : api_key_G,
+            contact_name : name,
+            contact_address : address,
+            contact_city : city,
+            contact_state : state,
+            contact_zip_code : zip,
+            contact_home_phone : home,
+            contact_cell_phone : cell,
+            contact_work_phone : work,
+            contact_primary_email : email,
+            contact_secondary_email : email2
+        },
+        success: function(result){
+            console.log("add success");
+            renderContacts();
+            loadContent("welcomeUser.html");
+        },
+        error: function(result){
+            console.log("add fail");
+        }
+
+    });
+}
+
 function renderAddContact() {
 
     loadContent("addContact.html");
@@ -144,7 +184,7 @@ function renderAddContact() {
 
 function renderContacts() {
 
-    var contactResponse = "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderAddContact()'><b>Add</b></a>";
+    var contactResponse = "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderAddContact()'><center><b>Add</b></center></a>";
 
     $.ajax({
 		url: "http://35.227.78.91/user/contacts",
