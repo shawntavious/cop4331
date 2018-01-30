@@ -65,6 +65,8 @@ function logout() {
     document.cookie = "api_key=;";
     document.getElementById("username").innerHTML = "Anonymous";
     // Add a line to remove all of the previously loaded contacts... TODO
+    api_key_G = "";
+    renderContacts();
     loadContent("login.html");
 }
 
@@ -194,11 +196,15 @@ function renderContacts() {
 		},
 		success: function(result){
          
-         $.each(result, function(index){
-            contactResponse += "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderContact(result[index].ContactID)'>" + result[index].contact_name + "</a>";
-         });
+            $.each(result, function(index){
+                contactResponse += "<a href='#' class='w3-bar-item w3-button w3-border' onclick='renderContact(result[index].ContactID)'>" + result[index].contact_name + "</a>";
+            });
 
         	document.getElementById("nav-sidebar").innerHTML = contactResponse;
-         console.log(result);
-    }});
+            console.log(result);
+        },
+        error: function(result){
+            document.getElementById("nav-sidebar").innerHTML = contactResponse;
+        }
+    });
 }
